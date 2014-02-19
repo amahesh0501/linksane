@@ -1,8 +1,30 @@
-<ul>
-  <% if session[:id] %>
-    <li><%= link_to "Logout", signout_path, :method => :delete %></li>
-  <% else %>
-    <li><%= link_to "Login", signin_path %></li>
-  <% end %>
-</ul>
-<hr>
+<div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Browntown Reddit</a>
+          </div>
+          <div class="navbar-collapse collapse">
+
+            <% if session[:id] %>
+              <ul class="nav navbar-nav navbar-right">
+                <li><%= link_to "Logout", signout_path, :method => :delete %></li>
+              </ul>
+            <% else %>
+              <ul class="nav navbar-nav navbar-right">
+                <li><%= link_to "Sign In", signin_path %></li>
+              </ul>
+            <% end %>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </div>
+
+
+<br/><br/>
+
+

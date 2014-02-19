@@ -46,30 +46,21 @@
             <div class="errors"><%= @post_new_errors %></div>
             <br/>
           <% end %>
-
-          <form role="form" id="create_post" method="post" action="/posts">
-
-            <div class="form-group">
-              <label for="exampleInputPassword1">Title</label>
-              <input  class="form-control" type="title" name="title" placeholder="Great search engine" value="<%= @title %>" required>
+          <div class="row">
+            <div class="col-md-5">
+              <%= form_for [@wall, @post] do |f| %>
+                <div class="form-group">
+                  <%= f.label :title %><br/>
+                  <%= f.text_field :title %>
+                </div>
+                <div class="form-group">
+                  <%= f.label "YouTube Embed Code" %><br/>
+                  <%= f.text_area :description , :cols => "60", :rows => "3" %>
+                </div>
+                <%= f.submit "Create Post", :class => 'btn btn-success'  %>
+              <% end %>
             </div>
-
-            <div class="form-group">
-              <label for="exampleInputPassword1">Embed Code</label>
-              <textarea class="form-control" rows="4" cols="50" name="description" title="description" required><%= @description %></textarea>
-            </div>
-
-            <% if @signed_in == false %>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Your Name</label>
-                <input  class="form-control" name="your_name"  value="<%= @your_name %>" required>
-              </div>
-            <%end%>
-
-            <input type="hidden" name="wall_id" value="<%=@wall.id%>">
-
-            <button type="submit" class="btn btn-success">Post Your Video</button>
-          </form>
+          </div>
       </div>
 
       <div class="tab" id="tab3">
@@ -77,29 +68,25 @@
           <div class="errors"><%= @post_new_errors %></div>
           <br/>
         <% end %>
-
-        <form role="form" id="create_post" method="post" action="/posts">
-          <div class="form-group">
-              <label for="exampleInputPassword1">Link</label>
-              <input class="form-control" type="url" name="link" placeholder="e.g., www.google.com" value="<%= @link %>" required>
+        <div class="row">
+          <div class="col-md-5">
+            <%= form_for [@wall, @post] do |f| %>
+              <div class="form-group">
+                <%= f.label :link %><br/>
+                <%= f.url_field :link %>
+              </div>
+              <div class="form-group">
+                <%= f.label :title %><br/>
+                <%= f.text_field :title %>
+              </div>
+              <div class="form-group">
+                <%= f.label "Description" %><br/>
+                <%= f.text_area :description , :cols => "60", :rows => "3" %>
+              </div>
+              <%= f.submit "Create Post", :class => 'btn btn-success'  %>
+            <% end %>
           </div>
-
-          <div class="form-group">
-            <label for="exampleInputPassword1">Title</label>
-            <input  class="form-control" type="title" name="title" placeholder="Great search engine" value="<%= @title %>" required>
-          </div>
-
-          <div class="form-group">
-            <label for="exampleInputPassword1">Description</label>
-            <textarea class="form-control" rows="4" cols="50" name="description" title="description" required><%= @description %></textarea>
-          </div>
-
-
-
-          <input type="hidden" name="wall_id" value="<%=@wall.id%>">
-
-          <button type="submit" class="btn btn-success">Post Your Link</button>
-        </form>
+        </div>
       </div>
     </div>
 
@@ -141,7 +128,9 @@
             <%end%>
             <%formatted_date = post.created_at.strftime('%b %d %Y at %H:%M')%>
             <p><%=formatted_date%></p>
-            <p><a href="/posts/<%=post.id%>"><%=post.comments.length%> Comments</a></p>
+            <% wall = Wall.find(post.wall_id) %>
+            <% comments = post.comments.length.to_s + " comments" %>
+            <p><%= link_to comments, wall_post_path(wall, post)%></p>
         </div>
         <div class="col-md-1"></div>
       </div>

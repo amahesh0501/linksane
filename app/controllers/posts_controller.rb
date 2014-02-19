@@ -9,8 +9,11 @@ class PostsController < ApplicationController
   end
 
   def show
+    # <%= link_to "Click to upvote!", voteup_path(:post_id => @post.id), :method => :post %>
+
     if session[:id]
       @post = Post.find params[:id]
+      @comments = @post.comments
       @comment = Comment.new
       @wall = Wall.find(params[:wall_id])
     else
@@ -31,7 +34,7 @@ class PostsController < ApplicationController
     @wall = Wall.find params[:wall_id]
     @post = @wall.posts.new(link: params[:post][:link], description: params[:post][:description], title: params[:post][:title], user_id: session[:id], wall_id: @wall.id )
     if @post.save
-      redirect_to wall_post_path(@wall, @post)
+      redirect_to wall_path(@wall)
     else
       render :new
     end

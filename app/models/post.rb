@@ -5,6 +5,5 @@ class Post < ActiveRecord::Base
   belongs_to :wall
   has_many :comments
   has_many :votes
-  validates_presence_of :link, :title, :description
-  validates_uniqueness_of :link
+  validates_presence_of :title, :description
 end
