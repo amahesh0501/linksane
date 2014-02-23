@@ -4,6 +4,7 @@
   <ul class="nav nav-tabs">
     <li class="active"><a href="#edit" data-toggle="tab">Edit this Wall</a></li>
     <li><a href="#manage" data-toggle="tab">Manage Members</a></li>
+    <li><a href="#delete" data-toggle="tab">Delete Wall</a></li>
 
   </ul>
 
@@ -65,9 +66,13 @@
              </p>
            <% end %>
          </span>
-
        </div>
      </div>
+    </div>
+    <div class="tab-pane active" id="delete">
+      <br/>
+      <p>Please be careful: Once you delete a post, it will delete all posts assoicated with that wall</p>
+      <%= link_to 'Delete Wall', wall_path(@wall), :confirm => 'Are you sure?', :method => :delete %>
     </div>
 
   </div>

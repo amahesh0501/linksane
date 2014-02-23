@@ -5,6 +5,9 @@
       <h2>Sign In</h2>
 
       <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+      <%= content_tag(:div, flash[:error], :class => "flash_error") if flash[:error] %>
+      <%= content_tag(:div, flash[:notice], :id => "flash_notice") if flash[:notice] %>
+      <%= content_tag(:div, flash[:alert], :id => "flash_alert") if flash[:alert] %>
       <div class="form-group">
         <%= f.label :email %><br />
         <%= f.email_field :email, :autofocus => true %>

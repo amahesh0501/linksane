@@ -6,7 +6,11 @@ class PagesController < ApplicationController
       @user = current_user
       memberships = Membership.where(user_id: current_user.id)
       @walls = []
+      @posts = []
       memberships.each {|membership| @walls << Wall.find(membership.wall_id) if membership.revoked == false}
+      @walls.each {|wall| @posts << wall.posts}
+      @posts = @posts.flatten
+
 
     else
       @logged_in_user = false

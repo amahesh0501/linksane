@@ -3,6 +3,9 @@
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
+      <% @posts.each do |post| %>
+          <p><%= post.description %></p>
+      <% end %>
       <h2>Welcome <%=  @user.name %></h2>
       <br/>
       <h4>Walls</h4>

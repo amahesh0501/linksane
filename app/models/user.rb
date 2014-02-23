@@ -9,11 +9,15 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
   devise :omniauthable, :omniauth_providers => [:facebook]
 
+  validates_presence_of :name, :on => :creation
+
+
+
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :votes, dependent: :destroy
   has_many :walls, through: :memberships
-  has_many :memberships
+  has_many :memberships, dependent: :destroy
 
   def self.find_for_facebook_oauth(auth)
     where(auth.slice(:provider, :uid)).first_or_create do |user|
