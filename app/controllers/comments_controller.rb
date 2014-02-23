@@ -5,16 +5,12 @@ class CommentsController < ApplicationController
   end
 
   def show
-    if user_signed_in?
-      @comment = Comment.find params[:id]
-    else
-      redirect_to '/signin'
-    end
+    authenticate_user!
+    @comment = Comment.find params[:id]
   end
 
   def new
     redirect_to wall_post_path(Wall.find(params[:wall_id]), Post.find(params[:post_id]))
-
   end
 
   def create
@@ -33,13 +29,15 @@ class CommentsController < ApplicationController
   end
 
   def edit
+    authenticate_user!
     @wall = Wall.find(params[:wall_id])
     @post = Post.find(params[:post_id])
-    if user_signed_in?
-      @comment = Comment.find params[:id]
-    else
-      redirect_to '/signin'
+    @comment = Comment.find params[:id]
+
+    unless @post.user_id == current_user.id
+      redirect_to wall_post_path(@wall, @post)
     end
+
   end
 
   def update

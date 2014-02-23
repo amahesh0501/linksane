@@ -9,9 +9,9 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
   devise :omniauthable, :omniauth_providers => [:facebook]
 
-  has_many :posts
-  has_many :comments
-  has_many :votes
+  has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :votes, dependent: :destroy
   has_many :walls, through: :memberships
   has_many :memberships
 

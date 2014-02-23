@@ -13,7 +13,7 @@
       <%end%>
       <ul>
         <% @walls.each do |wall| %>
-        <li><a href ="/<%=wall.name%>"><%=wall.name%></a></li>
+        <li><%= link_to wall.name, wall_path(wall) %></li>
         <%end%>
       </ul>
     </div>

@@ -33,14 +33,7 @@ $(document).ready(function () {
     });
   })
 
-  $("#tab1").show();
-  $("li").click(function(){
-    $("li").attr('class', '');
-    $(".tab").hide();
-    $(this).attr('class', 'active')
-    var tab = $(this).find("a").attr('href')
-    $(tab).show();
-  });
+
 
   $('#post_form').hide();
   $('#show_post_form').on('click', function(){

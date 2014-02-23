@@ -5,49 +5,41 @@ class WallsController < ApplicationController
   end
 
   def show
+    authenticate_user!
     @wall = Wall.find params[:id]
     @posts = @wall.posts.order("created_at DESC").paginate(:page => params[:page], :per_page => 10)
     @user = current_user
     @post = Post.new
     @error = flash[:access_errors]
     @membership = Membership.find_by_user_id_and_wall_id(current_user.id, @wall.id)
-    if user_signed_in?
-      if @membership && !@membership.revoked
-        render :show
-      elsif @membership && @membership.revoked
-        render :revoked
-      else
-        redirect_to new_wall_membership_path(@wall, @membership)
-        #redirect_to '/walls/' + @wall.id.to_s + '/memberships/new'
-      end
+    if @membership && !@membership.revoked
+      render :show
+    elsif @membership && @membership.revoked
+      render :revoked
     else
-      redirect_to '/auth/login'
+      redirect_to new_wall_membership_path(@wall, @membership)
+      #redirect_to '/walls/' + @wall.id.to_s + '/memberships/new'
     end
   end
 
   def new
-    if user_signed_in?
-      @wall = Wall.new
-      @user_id = current_user.id
-    else
-      redirect_to '/auth/login'
-    end
+    authenticate_user!
+    @wall = Wall.new
+    @user_id = current_user.id
+
   end
 
   def create
-    if user_signed_in?
-      @user = current_user
-      @wall = @user.walls.build(params[:wall])
-      if @wall.save
-        Membership.create(wall_id: @wall.id, user_id: current_user.id)
-        redirect_to wall_path(@wall)
-      else
-        flash[:errors] = @wall.errors.full_messages
-        redirect_to new_wall_path(@wall)
-      end
+    @user = current_user
+    @wall = @user.walls.build(params[:wall])
+    if @wall.save
+      Membership.create(wall_id: @wall.id, user_id: current_user.id)
+      redirect_to wall_path(@wall)
     else
-      redirect_to '/auth/login'
+      flash[:errors] = @wall.errors.full_messages
+      redirect_to new_wall_path(@wall)
     end
+
   end
 
   def edit
@@ -62,7 +54,7 @@ class WallsController < ApplicationController
 
 
     unless @wall.admin_id == current_user.id
-      redirect_to root_path
+      redirect_to wall_path(@wall)
     end
   end
 
@@ -82,6 +74,10 @@ class WallsController < ApplicationController
     redirect_to root_path
   end
 
+def manage_wall
+  authenticate_user!
+  @walls = Wall.where(admin_id: current_user.id)
+end
 
 
 end

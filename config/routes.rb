@@ -5,7 +5,7 @@ Hackernewsclone::Application.routes.draw do
   root :to => 'pages#index'
   match '/memberships/revoke', to: 'memberships#revoke', via: 'post'
   match '/memberships/reinstate', to: 'memberships#reinstate', via: 'post'
-
+  match '/walls/manage_walls', to: 'walls#manage_wall'
   resources :walls do
     resources :memberships, only: [:new, :create]
     resources :posts do

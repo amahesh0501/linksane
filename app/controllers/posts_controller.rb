@@ -5,15 +5,17 @@ class PostsController < ApplicationController
   end
 
   def show
-    if user_signed_in?
-      @post = Post.find params[:id]
-      @can_edit = true if @post.user_id == current_user.id
-      @comments = @post.comments.order("created_at DESC")
-      @comment = Comment.new
-      @wall = Wall.find(params[:wall_id])
-    else
-      redirect_to '/signin'
+    authenticate_user!
+    membership = Membership.where(wall_id: params[:wall_id], user_id: current_user.id)
+    unless membership.length == 1 && membership.first.revoked == false
+      redirect_to wall_path(Wall.find(params[:wall_id]))
     end
+
+    @post = Post.find params[:id]
+    @can_edit = true if @post.user_id == current_user.id
+    @comments = @post.comments.order("created_at DESC")
+    @comment = Comment.new
+    @wall = Wall.find(params[:wall_id])
   end
 
   def new
@@ -33,12 +35,13 @@ class PostsController < ApplicationController
   end
 
   def edit
-    if user_signed_in?
-      @post = Post.find params[:id]
-      @wall = Wall.find(params[:wall_id])
-    else
-      redirect_to '/signin'
+    authenticate_user!
+    @post = Post.find params[:id]
+    @wall = Wall.find(params[:wall_id])
+    unless @post.user_id == current_user.id
+      redirect_to wall_path(Wall.find(params[:wall_id]))
     end
+
   end
 
   def update

@@ -1,63 +1,78 @@
 <div class="container">
-  <h1>Edit this Wall</h1>
-  <%= render 'layouts/errors' if flash[:errors] %>
-  <div class="row">
-    <div class="col-md-8">
-      <%= form_for @wall do |f| %>
-        <div class="form-group">
-          <%= f.label :name %><br/>
-          <%= f.text_field :name %>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#edit" data-toggle="tab">Edit this Wall</a></li>
+    <li><a href="#manage" data-toggle="tab">Manage Members</a></li>
+
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane active" id="edit">
+      <h1>Edit this Wall</h1>
+      <%= render 'layouts/errors' if flash[:errors] %>
+      <div class="row">
+        <div class="col-md-8">
+          <%= form_for @wall do |f| %>
+            <div class="form-group">
+              <%= f.label :name %><br/>
+              <%= f.text_field :name %>
+            </div>
+            <div class="form-group">
+              <%= f.label :alias%><br/>
+              <%= f.text_field :alias %>
+            </div>
+            <div class="form-group">
+              <%= f.label :access_code %><br/>
+              <%= f.text_field :access_code %>
+            </div>
+            <div class="form-group">
+              <%= f.label :description %><br/>
+              <%= f.text_area :description, :rows => "3" %>
+            </div>
+            <%= f.hidden_field :admin_id, :value => current_user.id %>
+            <%= f.submit "Edit Wall", :class => 'btn btn-success'  %>
+          <% end %>
         </div>
-        <div class="form-group">
-          <%= f.label :alias%><br/>
-          <%= f.text_field :alias %>
-        </div>
-        <div class="form-group">
-          <%= f.label :access_code %><br/>
-          <%= f.text_field :access_code %>
-        </div>
-        <div class="form-group">
-          <%= f.label :description %><br/>
-          <%= f.text_area :description, :rows => "3" %>
-        </div>
-        <%= f.hidden_field :admin_id, :value => current_user.id %>
-        <%= f.submit "Edit Wall", :class => 'btn btn-success'  %>
-      <% end %>
+      </div>
     </div>
+    <div class="tab-pane" id="manage">
+     <div class="row">
+       <div class="col-md-8">
+
+         <span class="revoke">
+           <h3>Current Members</h3>
+           <% @members.each do |member| %>
+             <p class="revoke" data-user-id=<%=member.id%>>
+               <%= member.name %>
+               <% unless member == current_user %>
+                 <%= link_to "Remove Member from Group", '#', {data: {user_id: member.id, wall_id: @wall.id}}  %>
+               <% end %>
+             </p>
+           <% end %>
+         </span>
+
+         <span class="reinstate">
+           <h3>Banned Members</h3>
+           <% if @banned_members.length == 0 %>
+             <p>There are no banned members</p>
+             <%end%>
+           <% @banned_members.each do |member| %>
+             <p class="reinstate" data-user-id=<%=member.id%>>
+               <%= member.name %>
+               <%= link_to "Let Member Back In", '#', {data: {user_id: member.id, wall_id: @wall.id}}  %>
+             </p>
+           <% end %>
+         </span>
+
+       </div>
+     </div>
+    </div>
+
   </div>
 
-  <br/><br/><br/>
 
-  <div class="row">
-    <div class="col-md-8">
-
-      <span class="revoke">
-        <h3>Current Members</h3>
-        <% @members.each do |member| %>
-          <p class="revoke" data-user-id=<%=member.id%>>
-            <%= member.name %>
-            <% unless member == current_user %>
-              <%= link_to "Remove Member from Group", '#', {data: {user_id: member.id, wall_id: @wall.id}}  %>
-            <% end %>
-          </p>
-        <% end %>
-      </span>
-
-      <span class="reinstate">
-        <h3>Banned Members</h3>
-        <% if @banned_members.length == 0 %>
-          <p>There are no banned members</p>
-          <%end%>
-        <% @banned_members.each do |member| %>
-          <p class="reinstate" data-user-id=<%=member.id%>>
-            <%= member.name %>
-            <%= link_to "Let Member Back In", '#', {data: {user_id: member.id, wall_id: @wall.id}}  %>
-          </p>
-        <% end %>
-      </span>
-
-    </div>
-  </div>
 
 
 

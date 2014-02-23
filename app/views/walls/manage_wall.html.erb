@@ -1,0 +1,10 @@
+<div class="container">
+
+  <h3>Walls I Have Created</h3>
+  <% if @walls.length == 0 %>
+    <p>You don't have any walls yet. Why not <%= link_to "create one", new_wall_path %>?</p>
+  <% end %>
+  <% @walls.each do |wall| %>
+    <p><%= link_to wall.name, edit_wall_path(wall) %></p>
+  <% end %>
+</div>
