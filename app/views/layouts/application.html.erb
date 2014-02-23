@@ -9,16 +9,20 @@
 
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
   <!-- Optional theme -->
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-
   <!-- Latest compiled and minified JavaScript -->
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 </head>
 <body>
   <%= render 'layouts/navigation' %>
-
-  <%= yield %>
+  <div class="container">
+    <div class="row row-offcanvas row-offcanvas-right">
+      <%= render 'layouts/sidebar' %>
+      <div class="col-xs-12 col-sm-9">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
