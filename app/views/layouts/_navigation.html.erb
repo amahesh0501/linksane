@@ -14,6 +14,7 @@
         <ul class="nav navbar-nav navbar-right">
           <li><%= link_to "Account Settings", "/auth/register/edit" %></li>
           <li><%= link_to "Manage Walls", "/walls/manage_walls" %></li>
+          <li><%= link_to "Create a Wall", new_wall_path %></li>
           <li><%= link_to "Logout", "/auth/logout", :method => :delete %></li>
         </ul>
       <% else %>

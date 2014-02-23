@@ -5,18 +5,6 @@
       <% @posts.each do |post| %>
           <p><%= post.description %></p>
       <% end %>
-      <br/>
-      <h4>Walls</h4>
-      <a class="btn btn-primary" href="/walls/new" role="button">Create a New Wall</a>
-      <% if @walls.length == 0 %>
-      <br/><br/>
-      <p> You have no walls yet, create one to get started </p>
-      <%end%>
-      <ul>
-        <% @walls.each do |wall| %>
-        <li><%= link_to wall.name, wall_path(wall) %></li>
-        <%end%>
-      </ul>
     </div>
   </div>
   <%else%>

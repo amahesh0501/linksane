@@ -3,7 +3,21 @@
     <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
   </p>
   <div class="list-group">
-    <a href="#" class="list-group-item active">Link</a>
-    <a href="#" class="list-group-item">Link</a>
+    <% if @user_walls_accessible.length == 0 %>
+      <a href="#" class="list-group-item active">You Have No Walls Yet :(</a>
+    <% end %>
+
+    <% @user_walls_accessible.each do |wall| %>
+      <%= link_to wall.name, wall_path(wall), class: "list-group-item" %>
+
+    <%end%>
+
+
+
+
   </div>
+
+
 </div><!--/span-->
+
+
