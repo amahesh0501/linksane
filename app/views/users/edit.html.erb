@@ -1,7 +1,0 @@
-<p>Editing <%= @user.name %></p>
-<%= form_for @user do |f| %>
-  Name: <%= f.text_field :name %><br />
-  Email: <%= f.text_field :email %><br />
-  Password: <%= f.password_field :password_hash %></br>
-  <%= f.submit %>
-<% end %>

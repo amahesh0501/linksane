@@ -1,7 +1,30 @@
-<p>Editing Post: <%= @post.title %></p>
-<%= form_for @post do |f| %>
-  Link: <%= f.text_field :link %><br />
-  Title: <%= f.text_field :title %><br />
-  Description: <%= f.text_area :description %><br />
-  <%= f.submit %>
-<% end %>
+<div class="container">
+  <%= render 'layouts/errors' if flash[:errors] %>
+<div class="row">
+  <div class="col-md-5">
+    <%= form_for [@wall, @post] do |f| %>
+
+      <div class="form-group">
+        <%= f.label :description %><br/>
+        <%= f.text_area :description , :cols => "60", :rows => "3" %>
+      </div>
+
+      <% if @post.link %>
+      <div class="form-group">
+        <%= f.label :link %><br/>
+        <%= f.url_field :link %>
+      </div>
+      <%end%>
+
+      <% if @post.image_file_name %>
+      <div class="form-group">
+        <%= f.label :image %>
+        <%= f.file_field :image, class: "form-control" %>
+      </div>
+      <%end%>
+
+      <%= f.submit "Edit Post", :class => 'btn btn-success'  %>
+    <% end %>
+  </div>
+</div>
+</div>

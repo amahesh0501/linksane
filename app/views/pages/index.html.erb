@@ -1,32 +1,37 @@
-<div class="container">
-
-<% if @current_user %>
-  <h2>Welcome <%=@user.name%></h2>
-  <br><br>
-  <h4>Walls</h4>
-  <a class="btn btn-primary" href="/walls/new" role="button">Create a New Wall</a>
-    <% if @walls.length == 0 %>
+<div class="container>"
+  <% if user_signed_in? %>
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <h2>Welcome <%=  @user.name %></h2>
+      <br/>
+      <h4>Walls</h4>
+      <a class="btn btn-primary" href="/walls/new" role="button">Create a New Wall</a>
+      <% if @walls.length == 0 %>
+      <br/><br/>
       <p> You have no walls yet, create one to get started </p>
-    <%end%>
-    <ul>
-      <% @walls.each do |wall| %>
-        <li><a href ="/<%=wall.name%>"><%=wall.name%></a></li>
       <%end%>
-    </ul>
-<%else%>
+      <ul>
+        <% @walls.each do |wall| %>
+        <li><a href ="/<%=wall.name%>"><%=wall.name%></a></li>
+        <%end%>
+      </ul>
+    </div>
+  </div>
+  <%else%>
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
       <div class="jumbotron">
-         <h1>Welcome to Browntown Reddit</h1>
-         <p>You wanna seee this shit - sign up or sign in</p>
-         <p>
-           <a class="btn btn-lg btn-primary" href="/sessions/new" role="button">Sign In</a> <a class="btn btn-lg btn-success" href="/users/new" role="button">Sign Up</a>
-         </p>
-      </div>
-    </div>
-    <div class="col-md-1"></div>
-  </div>
-<%end%>
-
+       <h1>Welcome to Browntown Reddit</h1>
+       <p>You wanna seee this shit - sign up or sign in</p>
+       <p>
+         <a class="btn btn-lg btn-primary" href="/auth/login" role="button">Sign In</a> <a class="btn btn-lg btn-success" href="/auth/register/sign_up" role="button">Sign Up</a>
+         <%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
+       </p>
+     </div>
+   </div>
+   <div class="col-md-1"></div>
+ </div>
+ <%end%>
 </div>

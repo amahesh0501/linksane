@@ -26,10 +26,10 @@ $(document).ready(function () {
     });
 
     request.done(function(response){
-      var post_id_to_update = response.post
-      var new_vote_count = response.votes
-      var selector = '.vote-count-' + post_id_to_update
-      $(selector).text(new_vote_count + ' votes')
+      var post_id_to_update = response.post;
+      var new_vote_count = response.votes;
+      var selector = '.vote-count-' + post_id_to_update;
+      $(selector).text(new_vote_count + ' votes');
     });
   })
 
@@ -45,11 +45,7 @@ $(document).ready(function () {
   $('#post_form').hide();
   $('#show_post_form').on('click', function(){
     $('#post_form').slideToggle();
-  })
-
-
-
-
+  });
 
 
 

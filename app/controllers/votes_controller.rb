@@ -1,10 +1,11 @@
 class VotesController < ApplicationController
   def create
-    if session[:id]
+    vote = Vote.new(user_id: current_user.id, post_id: params[:post_id])
+    if vote.save
       post = Post.find(params[:post_id])
-      user = User.find(session[:id])
-      Vote.create(user_id: user.id, post_id: post.id)
+      Vote.create(user_id: current_user.id, post_id: post.id)
+      render :partial => 'vote', :locals => { :post => post }
     end
-    redirect_to post_path(post)
   end
 end
+

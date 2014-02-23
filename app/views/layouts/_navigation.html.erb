@@ -11,13 +11,15 @@
           </div>
           <div class="navbar-collapse collapse">
 
-            <% if session[:id] %>
+            <% if user_signed_in? %>
               <ul class="nav navbar-nav navbar-right">
-                <li><%= link_to "Logout", signout_path, :method => :delete %></li>
+                <li><%= link_to "Account Settings", "/auth/register/edit" %></li>
+                <li><%= link_to "Logout", "/auth/logout", :method => :delete %></li>
               </ul>
             <% else %>
               <ul class="nav navbar-nav navbar-right">
-                <li><%= link_to "Sign In", signin_path %></li>
+                <li><%= link_to "Sign In", "/auth/login" %></li>
+                <li><%= link_to "Sign Up", "/auth/register/sign_up" %></li>
               </ul>
             <% end %>
           </div><!--/.nav-collapse -->

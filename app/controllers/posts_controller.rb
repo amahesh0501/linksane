@@ -1,19 +1,14 @@
 class PostsController < ApplicationController
   def index
-    if session[:id]
-      @wall = Wall.find params[:wall_id]
-      @posts = @wall.posts
-    else
-      redirect_to '/signin'
-    end
+    redirect_to wall_path(Wall.find params[:wall_id])
+
   end
 
   def show
-    # <%= link_to "Click to upvote!", voteup_path(:post_id => @post.id), :method => :post %>
-
-    if session[:id]
+    if user_signed_in?
       @post = Post.find params[:id]
-      @comments = @post.comments
+      @can_edit = true if @post.user_id == current_user.id
+      @comments = @post.comments.order("created_at DESC")
       @comment = Comment.new
       @wall = Wall.find(params[:wall_id])
     else
@@ -22,27 +17,25 @@ class PostsController < ApplicationController
   end
 
   def new
-    if session[:id]
-      @wall = Wall.find params[:wall_id]
-      @post = Post.new
-    else
-      redirect_to '/signin'
-    end
+    redirect_to wall_path(Wall.find params[:wall_id])
   end
 
   def create
     @wall = Wall.find params[:wall_id]
-    @post = @wall.posts.new(link: params[:post][:link], description: params[:post][:description], title: params[:post][:title], user_id: session[:id], wall_id: @wall.id )
+    @post = @wall.posts.build(link: params[:post][:link], description: params[:post][:description], user_id: current_user.id, wall_id: @wall.id, image: params[:post][:image] )
+
     if @post.save
       redirect_to wall_path(@wall)
     else
-      render :new
+      flash[:errors] = @post.errors.full_messages
+      redirect_to wall_path(@wall)
     end
   end
 
   def edit
-    if session[:id]
+    if user_signed_in?
       @post = Post.find params[:id]
+      @wall = Wall.find(params[:wall_id])
     else
       redirect_to '/signin'
     end
@@ -51,15 +44,18 @@ class PostsController < ApplicationController
   def update
     @post = Post.find params[:id]
     if @post.update_attributes params[:post]
-      redirect_to post_path(@post)
+      redirect_to wall_post_path(Wall.find(params[:wall_id]), @post)
     else
-      render :edit
+      redirect_to edit_wall_post_path(Wall.find(params[:wall_id]), @post)
+      flash[:errors] = @post.errors.full_messages
     end
   end
 
   def destroy
-    @post = Post.find params[:id]
-    @post.destroy
-    redirect_to root_path
+    wall = Wall.find(params[:wall_id])
+    post = Post.find params[:id]
+    post.destroy
+    redirect_to wall_path(wall)
   end
+
 end

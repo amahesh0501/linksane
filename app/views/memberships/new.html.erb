@@ -1,9 +1,13 @@
-      <%= form_for [@wall, @membership] do |f| %>
-        <%= label_tag :access_code %>
-        <%= text_field_tag :access_code %>
-        <%= f.hidden_field :user_id, :value => @user.id %>
-        <%= f.hidden_field :wall_id, :value => @wall_id %>
-        <%= f.submit %>
-      <% end %>
+<div class="container">
+  <%= form_for [@wall, @membership] do |f| %>
+    <div class="form-group">
+      <%= label_tag :access_code %><br/>
+      <%= text_field_tag :access_code %>
+    </div>
+    <%= f.hidden_field :user_id, :value => @user.id %>
+    <%= f.hidden_field :wall_id, :value => @wall_id %>
+    <%= f.submit "Enter Code", :class => 'btn btn-success' %>
+  <% end %>
+</div>
 
 

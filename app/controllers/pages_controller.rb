@@ -1,13 +1,15 @@
 class PagesController < ApplicationController
 
   def index
-    if session[:id]
-      @current_user = true
-      @user = User.find(session[:id])
-      @walls = @user.walls
-      redirect_to user_path(@user)
+    if user_signed_in?
+      # @logged_in_user= true
+      @user = current_user
+      memberships = Membership.where(user_id: current_user.id)
+      @walls = []
+      memberships.each {|membership| @walls << Wall.find(membership.wall_id) if membership.revoked == false}
+
     else
-      @current_user = false
+      @logged_in_user = false
     end
   end
 end

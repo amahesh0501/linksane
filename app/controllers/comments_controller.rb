@@ -1,15 +1,11 @@
 class CommentsController < ApplicationController
 
   def index
-    if session[:id]
-      @comments = Comment.all
-    else
-      redirect_to '/signin'
-    end
+    redirect_to wall_post_path(Wall.find(params[:wall_id]), Post.find(params[:post_id]))
   end
 
   def show
-    if session[:id]
+    if user_signed_in?
       @comment = Comment.find params[:id]
     else
       redirect_to '/signin'
@@ -17,29 +13,29 @@ class CommentsController < ApplicationController
   end
 
   def new
-    if session[:id]
-      @wall = Wall.find params[:wall_id]
-      @post = Post.find params[:post_id]
-      @comment = Comment.new
-    else
-      redirect_to '/signin'
-    end
+    redirect_to wall_post_path(Wall.find(params[:wall_id]), Post.find(params[:post_id]))
+
   end
 
   def create
     @wall = Wall.find params[:wall_id]
     @post = Post.find params[:post_id]
-    @comment = @post.comments.build(description: params[:comment][:description], user_id: session[:id], post_id: params[:post_id])
+    @user = current_user
+    @user_id = current_user.id
+    @comment = @post.comments.build(description: params[:comment][:description], user_id: current_user.id, post_id: params[:post_id])
     if @comment.save
       redirect_to wall_post_path(@wall, @post)
     else
-      puts @comment.errors.full_messages
-      render :new
+      flash[:errors] = @comment.errors.full_messages
+      redirect_to wall_post_path(@wall, @post)
+
     end
   end
 
   def edit
-    if session[:id]
+    @wall = Wall.find(params[:wall_id])
+    @post = Post.find(params[:post_id])
+    if user_signed_in?
       @comment = Comment.find params[:id]
     else
       redirect_to '/signin'
@@ -51,16 +47,17 @@ class CommentsController < ApplicationController
     @post = Post.find(@comment.post_id)
     @wall = Wall.find(@post.wall_id)
     if @comment.update_attributes params[:comment]
-      redirect_to wall_post_comment_path(@wall, @comment, @comment)
+      redirect_to wall_post_path(@wall, @post)
     else
-      render :edit
+      flash[:errors] = @comment.errors.full_messages
+      redirect_to edit_wall_post_comment_path(@wall, @post, @comment)
     end
   end
 
   def destroy
     @comment = Comment.find params[:id]
     @comment.destroy
-    redirect_to post_path
+    redirect_to wall_post_path(Wall.find(params[:wall_id]), Post.find(params[:post_id]))
   end
 
 end

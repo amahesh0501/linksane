@@ -1,4 +1,11 @@
-<%= form_for [@post, @comment] do |f| %>
-  Description: <%= f.text_area :description %><br />
-  <%= f.submit %>
+<div class="container">
+<%= render 'layouts/errors' if flash[:errors] %>
+<%= form_for [@wall, @post, @comment] do |f| %>
+  <div class="form-group">
+    <%= f.label :comment_text %><br/>
+    <%= f.text_area :description, :cols => "60", :rows => "3" %><br/>
+  </div>
+  <%= f.submit "Edit Comment", :class => 'btn btn-success' %>
 <% end %>
+</div>
+<br/><br/>

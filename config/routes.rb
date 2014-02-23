@@ -1,7 +1,10 @@
 Hackernewsclone::Application.routes.draw do
 
-  root :to => 'pages#index'
 
+
+  root :to => 'pages#index'
+  match '/memberships/revoke', to: 'memberships#revoke', via: 'post'
+  match '/memberships/reinstate', to: 'memberships#reinstate', via: 'post'
 
   resources :walls do
     resources :memberships, only: [:new, :create]
@@ -10,12 +13,12 @@ Hackernewsclone::Application.routes.draw do
     end
   end
 
-  resources :users
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }, path: "auth", path_names: { sign_in: 'login', sign_out: 'logout', password: 'secret', confirmation: 'verification', unlock: 'unblock', registration: 'register', sign_up: 'sign_up' }
 
-  resource :sessions, only: [:new, :create, :destroy]
-  match '/signup', to: 'users#new', via: 'get'
-  match '/signin', to: 'sessions#new', via: 'get'
-  match '/signout', to: 'sessions#destroy', via: 'delete'
+
+  devise_scope :user do
+     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
+  end
 
 
   resource :votes, only: [:create]

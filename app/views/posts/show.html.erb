@@ -1,17 +1,18 @@
 <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-2">
-        <img class="vote" data-id="<%=@post.id%>" src="http://www.icondig.com/data/icons/nounproject/512/330.png" height="100" width="100"/>
-        <br/><br/>
-        <p class="vote-count-<%=@post.id%>"><%=@post.vote_count%> Votes</p>
+        <%= link_to image_tag('http://www.icondig.com/data/icons/nounproject/512/330.png', :width => "50px", :height =>
+        "50px"), votes_path(:post_id => @post.id), remote: true, method: :post, :class => 'vote-post' %>
+        <p class="display-vote-count"><%= pluralize(@post.votes.count, 'Vote') %></p>
     </div>
     <div class="col-md-6">
-        <h3><%=@post.title%></h3>
+        <% if @post.image_file_name != nil %>
+          <a href="<%=@post.image.url%>"><%= image_tag @post.image.url(:medium) %></a>
+        <% end %>
         <% if @post.link %>
-        <a href="<%=@post.link%>" target="_blank">View Link</a><br>
-        <p><%= @post.description %></p>
+          <a href="<%=@post.link%>" target="_blank">View Link</a>
         <%end%>
-
+        <p><%=@post.description%></p>
     </div>
     <div class="col-md-2 post-info">
         <% if @post.user_id %>
@@ -22,11 +23,8 @@
         <p><%=formatted_date%></p>
 
         <% if @can_edit %>
-          <a href="/posts/<%=@id%>/edit">Edit this post</a><br/><br/>
-          <form action="/posts/<%= @post.id %>" method="post">
-            <input name="_method" type="hidden" value="delete" />
-            <button type="submit" class="btn btn-danger ">Delete Post</button>
-          </form>
+          <%= link_to "Edit Post", edit_wall_post_path(@wall, @post) %><br/>
+          <%= link_to 'Delete Post', wall_post_path(@wall, @post), :confirm => 'Are you sure?', :method => :delete %>
         <%end%>
     </div>
     <div class="col-md-1"></div>
@@ -42,14 +40,14 @@
         <% user = User.find(comment.user_id) %>
         <p>By <%=user.name%></p>
 
-        <% if @user_id == comment.user_id %>
-          ---delete----
+        <% if comment.user_id == current_user.id %>
+          <%= link_to "Edit Comment", edit_wall_post_comment_path(@wall, @post, comment) %> | <%= link_to 'Delete Comment', wall_post_comment_path(@wall, @post, comment), :confirm => 'Are you sure?', :method => :delete %>
         <%end%>
         <hr/>
       <%end%>
 
       <%= @comment.errors[:description].join("<br>") if @comment.errors[:description] %>
-
+      <%= render 'layouts/errors' if flash[:errors] %>
       <%= form_for [@wall, @post, @comment] do |f| %>
         <div class="form-group">
           <%= f.label :comment %><br/>

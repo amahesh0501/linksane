@@ -1,11 +1,16 @@
 <div class="container">
   <h1>Create a Wall</h1>
+  <%= render 'layouts/errors' if flash[:errors] %>
   <div class="row">
     <div class="col-md-8">
       <%= form_for @wall do |f| %>
         <div class="form-group">
           <%= f.label :name %><br/>
           <%= f.text_field :name %>
+        </div>
+        <div class="form-group">
+          <%= f.label :alias%><br/>
+          <%= f.text_field :alias %>
         </div>
         <div class="form-group">
           <%= f.label :access_code %><br/>
