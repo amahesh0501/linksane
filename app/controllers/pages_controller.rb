@@ -11,6 +11,8 @@ class PagesController < ApplicationController
       @walls.each {|wall| @posts << wall.posts}
       @posts = @posts.flatten
 
+      @fb_links = @user.get_fb_links
+
 
     else
       @logged_in_user = false

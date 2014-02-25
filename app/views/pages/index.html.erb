@@ -2,6 +2,21 @@
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
+      <h2>FB Posts</h2>
+        <% @fb_links.each do |fblink| %>
+          <div class="row">
+            <div class="col-md-3"><p><%= link_to image_tag(fblink['picture']) if fblink['picture'] %></p></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-8">
+              <p><%= link_to fblink['name'], fblink['link'] %></p>
+              <p><%= fblink['caption'] %></p>
+              <p><%= fblink['message'] %></p>
+              <p>Posted by <%= link_to fblink['from']['name'], "http://facebook.com/"+ fblink['from']['id'] %>
+            </div>
+          </div>
+          <hr/>
+        <% end %>
+      <h2> Posts </h2>
       <% @posts.each do |post| %>
           <p><%= post.description %></p>
       <% end %>
