@@ -1,4 +1,3 @@
-<div class="container">
   <%= form_for [@wall, @membership] do |f| %>
     <div class="form-group">
       <%= label_tag :access_code %><br/>
@@ -8,6 +7,5 @@
     <%= f.hidden_field :wall_id, :value => @wall_id %>
     <%= f.submit "Enter Code", :class => 'btn btn-success' %>
   <% end %>
-</div>
 
 

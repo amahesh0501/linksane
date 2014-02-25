@@ -1,5 +1,4 @@
-<div class="container">
-  <%= render 'layouts/errors' if flash[:errors] %>
+<%= render 'layouts/errors' if flash[:errors] %>
 <div class="row">
   <div class="col-md-5">
     <%= form_for [@wall, @post] do |f| %>
@@ -26,5 +25,4 @@
       <%= f.submit "Edit Post", :class => 'btn btn-success'  %>
     <% end %>
   </div>
-</div>
 </div>

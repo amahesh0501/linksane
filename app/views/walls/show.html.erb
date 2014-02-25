@@ -1,12 +1,12 @@
-<div class="container">
+
 
 
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
 
-
-
+      <% @membership.last_visit_time = Time.now %>
+      <% @membership.save %>
 
     <button  id="show_post_form" class="btn btn-primary">Share Something</button>
 

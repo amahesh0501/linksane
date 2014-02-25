@@ -1,33 +1,35 @@
-<div class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Browntown Reddit</a>
-          </div>
-          <div class="navbar-collapse collapse">
+<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+ <div class="container">
+   <div class="navbar-header">
+     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+       <span class="sr-only">Toggle navigation</span>
+       <span class="icon-bar"></span>
+       <span class="icon-bar"></span>
+       <span class="icon-bar"></span>
+     </button>
+     <a class="navbar-brand" href="/">Linksane</a>
+   </div>
+   <div class="collapse navbar-collapse">
+      <% if user_signed_in? %>
+        <ul class="nav navbar-nav navbar-right">
+          <li><%= link_to "Account Settings", "/auth/register/edit" %></li>
+          <li><%= link_to "Manage Walls", "/walls/manage_walls" %></li>
+          <li><%= link_to "Create a Wall", new_wall_path %></li>
+          <li><%= link_to "Logout", "/auth/logout", :method => :delete %></li>
+        </ul>
+      <% else %>
+        <ul class="nav navbar-nav navbar-right">
+          <li><%= link_to "Sign In", "/auth/login" %></li>
+          <li><%= link_to "Sign Up", "/auth/register/sign_up" %></li>
+        </ul>
+      <% end %>
+   </div><!-- /.nav-collapse -->
+ </div><!-- /.container -->
+</div><!-- /.navbar -->
 
-            <% if user_signed_in? %>
-              <ul class="nav navbar-nav navbar-right">
-                <li><%= link_to "Account Settings", "/auth/register/edit" %></li>
-                <li><%= link_to "Manage Walls", "/walls/manage_walls" %></li>
-                <li><%= link_to "Logout", "/auth/logout", :method => :delete %></li>
-              </ul>
-            <% else %>
-              <ul class="nav navbar-nav navbar-right">
-                <li><%= link_to "Sign In", "/auth/login" %></li>
-                <li><%= link_to "Sign Up", "/auth/register/sign_up" %></li>
-              </ul>
-            <% end %>
-          </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-      </div>
+<br/><br/><br/><br/><br/>
 
 
-<br/><br/>
+
 
 

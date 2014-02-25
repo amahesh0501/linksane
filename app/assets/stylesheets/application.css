@@ -1,0 +1,7 @@
+.notification_count {
+  color: white;
+  float: right;
+  background-color: #BD2132;
+  padding: 0px 5px 0px 5px;
+  border-radius: 20%;
+}

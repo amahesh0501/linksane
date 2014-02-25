@@ -1,24 +1,60 @@
-<div class="container>"
   <% if user_signed_in? %>
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-      <% @posts.each do |post| %>
-          <p><%= post.description %></p>
-      <% end %>
-      <h2>Welcome <%=  @user.name %></h2>
+      <h2>FB Posts</h2>
+        <% @fblinks.each do |fblink| %>
+          <div class="row">
+            <div class="col-md-3"><p><%= image_tag(fblink.picture_url) if fblink.picture_url %></p></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-8">
+              <p><%= link_to fblink.name, fblink.url %></p>
+              <p><%= fblink.caption %></p>
+              <p><%= fblink.message %></p>
+              <img src="http://graph.facebook.com/<%=fblink.sender_id%>/picture" height="35" /> &nbsp; Posted by <%= link_to fblink.sender_name, "http://facebook.com/"+ fblink.sender_id %>
+            </div>
+          </div>
+          <hr/>
+        <% end %>
+      <h2> Posts </h2>
       <br/>
-      <h4>Walls</h4>
-      <a class="btn btn-primary" href="/walls/new" role="button">Create a New Wall</a>
-      <% if @walls.length == 0 %>
-      <br/><br/>
-      <p> You have no walls yet, create one to get started </p>
-      <%end%>
-      <ul>
-        <% @walls.each do |wall| %>
-        <li><%= link_to wall.name, wall_path(wall) %></li>
-        <%end%>
-      </ul>
+        <% @posts.each do |post| %>
+          <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-2">
+      <!--             <img class="vote" data-id="<%=post.id%>" src="http://www.icondig.com/data/icons/nounproject/512/330.png" height="50" width="50"/> -->
+                  <%= link_to image_tag('http://www.icondig.com/data/icons/nounproject/512/330.png', :width => "50px", :height =>
+      "50px"), votes_path(:post_id => post.id), remote: true, method: :post, :class => 'vote-post' %>
+                  <p class="display-vote-count"><%= pluralize(post.votes.count, 'Vote') %></p>
+              </div>
+              <div class="col-md-6">
+                  <% if post.image_file_name != nil %>
+                    <a href="<%=post.image.url%>"><%= image_tag post.image.url(:medium) %></a>
+                  <% end %>
+                  <% if post.link %>
+                    <a href="<%=post.link%>" target="_blank">View Link</a>
+                  <%end%>
+                  <p><%=post.description%></p>
+              </div>
+              <div class="col-md-2 post-info">
+                  <% if post.user_id %>
+                    <% user = User.find(post.user_id) %>
+                  <%end%>
+                  <% if post.user_id %>
+                    <p>Posted by: <%=user.name%></p>
+                  <%else%>
+                    <p>Posted by <%=post.anon_name%></p>
+                  <%end%>
+                  <%formatted_date = post.created_at.strftime('%b %d %Y at %H:%M')%>
+                  <p><%=formatted_date%></p>
+                  <% wall = Wall.find(post.wall_id) %>
+                  <% comments = post.comments.length.to_s + " comments" %>
+                  <p><%= link_to comments, wall_post_path(wall, post)%></p>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <hr/>
+          <%end%>
     </div>
   </div>
   <%else%>
@@ -37,4 +73,3 @@
    <div class="col-md-1"></div>
  </div>
  <%end%>
-</div>

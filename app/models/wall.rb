@@ -4,4 +4,5 @@ class Wall < ActiveRecord::Base
   has_many :users, through: :memberships
   has_many :memberships, dependent: :destroy
   validates :name, :alias, :access_code, presence: true
+  validates :name, length: { maximum: 20 }
 end

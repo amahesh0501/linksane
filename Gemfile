@@ -13,7 +13,8 @@ gem 'paperclip', '~> 3.0'
 gem 'will_paginate', '~> 3.0'
 gem 'will_paginate-bootstrap'
 gem 'omniauth-facebook'
-
+gem "koala", "~> 1.8.0rc1"
+gem 'debugger'
 
 gem 'devise'
 
