@@ -38,9 +38,10 @@ ActiveRecord::Schema.define(:version => 20140225055501) do
   create_table "memberships", :force => true do |t|
     t.integer  "user_id"
     t.integer  "wall_id"
-    t.boolean  "revoked",    :default => false
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.boolean  "revoked",         :default => false
+    t.datetime "last_visit_time"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   create_table "posts", :force => true do |t|

@@ -10,8 +10,10 @@ class PagesController < ApplicationController
       memberships.each {|membership| @walls << Wall.find(membership.wall_id) if membership.revoked == false}
       @walls.each {|wall| @posts << wall.posts}
       @posts = @posts.flatten
+      @posts.sort! { |a,b| b.created_at <=> a.created_at}
       @user.get_fb_links
       @fblinks = @user.links
+      @fblinks.order(:created_time).reverse
 
 
     else

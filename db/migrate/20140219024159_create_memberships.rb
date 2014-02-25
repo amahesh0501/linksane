@@ -4,6 +4,7 @@ class CreateMemberships < ActiveRecord::Migration
       t.belongs_to :user
       t.belongs_to :wall
       t.boolean :revoked, :default => false
+      t.datetime :last_visit_time
 
       t.timestamps
     end
