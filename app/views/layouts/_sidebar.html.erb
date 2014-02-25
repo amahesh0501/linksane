@@ -8,8 +8,15 @@
     <% end %>
 
     <% @user_walls_accessible.each do |wall| %>
-      <%= link_to wall.name, wall_path(wall), class: "list-group-item" %>
-
+      <% membership = Membership.where(user_id: current_user.id, wall_id: wall.id) %>
+      <% new_posts = wall.posts.where("created_at > ?", membership.first.last_visit_time) if membership %>
+      <% notification_count = new_posts.length if new_posts %>
+      <div class='list-group-item'>
+        <%= link_to wall.name, wall_path(wall)%>
+        <% if notification_count & notification_count > 0 %>
+          <span class="notification_count"><%= notification_count %> </span>
+        <% end %>
+      </div>
     <%end%>
 
 

@@ -231,7 +231,7 @@ Devise.setup do |config|
 
   require "omniauth-facebook"
     OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development?
-    config.omniauth :facebook, ENV['FACEBOOK_KEY'], ENV['FACEBOOK_SECRET']
+    config.omniauth :facebook, "1464544313758735", "65dc2651f30507df7812a12ae3759efd", scope: "email,publish_stream,read_stream"
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
