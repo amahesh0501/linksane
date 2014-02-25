@@ -1,3 +1,7 @@
+require 'debugger'
+require 'time'
+
+
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -18,6 +22,7 @@ class User < ActiveRecord::Base
   has_many :votes, dependent: :destroy
   has_many :walls, through: :memberships
   has_many :memberships, dependent: :destroy
+  has_many :links
 
   def self.find_for_facebook_oauth(auth)
     where(auth.slice(:provider, :uid)).first_or_create do |user|
@@ -55,14 +60,27 @@ class User < ActiveRecord::Base
 
   def get_fb_links
     all_fb_links =  self.facebook.get_connections("me", 'home')
-    link_posts = []
-    all_fb_links.each do |post|
-      if (post['caption'] && post['link'] !~ /https:\/\/www.facebook.com/) #|| post['message'].match(/http:\/\// || /https:\/\// )
-        link_posts << post
+    if Link.find_by_user_id(self.id)
+      last_100 = Link.find_all_by_user_id(self.id).reverse.take(100)
+      last_100.map! {|x| x['link_id'] }
+      p last_100
+      p "----"
+      all_fb_links.each do |post|
+          p post['id']
+        unless last_100.include?(post['id'])
+          if (post['caption'] && post['link'] !~ /https:\/\/www.facebook.com/) #|| post['message'].match(/http:\/\// || /https:\/\// )
+            Link.create(user_id: self.id, link_id: post['id'], sender_name: post['from']['name'], sender_id: post['from']['id'], message: post['message'], name: post['name'], caption: post['caption'], picture_url: post['picture'] , url: post['link'], description: post['description'], created_time: Time.parse(post['created_time'])  )
+          end
+        end
+      end
+
+    else
+      all_fb_links.each do |post|
+        if (post['caption'] && post['link'] !~ /https:\/\/www.facebook.com/) #|| post['message'].match(/http:\/\// || /https:\/\// )
+          Link.create(user_id: self.id, link_id: post['id'], sender_name: post['from']['name'], sender_id: post['from']['id'], message: post['message'], name: post['name'], caption: post['caption'], picture_url: post['picture'] , url: post['link'], description: post['description'], created_time: Time.parse(post['created_time'])  )
+        end
       end
     end
-
-    return link_posts
 
   end
 
@@ -71,4 +89,24 @@ class User < ActiveRecord::Base
 
 
 
+
+
+
 end
+
+
+
+
+
+# if Link.find_by_user_id(self.id)
+#   time = Time.parse(all_fb_links[counter]['created_time'])
+#   p true if time > self.links.last.created_time
+#   p time
+#   p "*" * 200
+#   if time > self.links.last.created_time
+#     post = all_fb_links[counter]
+#     if (post['caption'] && post['link'] !~ /https:\/\/www.facebook.com/)
+#       Link.create(user_id: self.id, url: post['link'], link_id: post['id'], sender_name: post['from']['name'], sender_id: post['from']['id'], message: post['message'], name: post['name'], caption: post['caption'], picture_url: post['link'], description: post['description'], created_time: Time.parse(post['created_time'])  )
+#     end
+#     counter+=1
+#   end
