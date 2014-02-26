@@ -1,7 +1,41 @@
-  <h3>Walls I Have Created</h3>
-  <% if @walls.length == 0 %>
-    <p>You don't have any walls yet. Why not <%= link_to "create one", new_wall_path %>?</p>
-  <% end %>
-  <% @walls.each do |wall| %>
-    <p><%= link_to wall.name, edit_wall_path(wall) %></p>
-  <% end %>
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#join" data-toggle="tab">Walls I Have Joined</a></li>
+    <li><a href="#create" data-toggle="tab">Walls I Have Created</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="join">
+      <div class="row">
+        <div class="col-md-8">
+          <h3>Walls I Have Joined</h3>
+          <% if @joined_walls.length == 0 %>
+            <p>You have not joined any walls yet. Why not <%= link_to "create one", new_wall_path %>? Walls you have already created can be managed on the other tab of this page.</p>
+          <% end %>
+          <% @joined_walls.each do |wall| %>
+            <% membership = Membership.where(user_id: current_user.id, wall_id: wall.id).first %>
+            <p class = "wall-link-<%=wall.id.to_s%>" ><%= link_to wall.name, wall_path(wall) %> | <%= link_to "Leave Wall", wall_membership_path(wall, membership, :wall_id => wall.id, :member_id => current_user.id), method: :delete, confirm: 'Delete?', :remote => true, id: "leave-group" %> </p>
+          <% end %>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="create">
+     <div class="row">
+       <div class="col-md-8">
+
+        <h3>Walls I Have Created</h3>
+        <% if @admin_walls.length == 0 %>
+          <p>You don't have any walls yet. Why not <%= link_to "create one", new_wall_path %>?</p>
+        <% end %>
+        <% @admin_walls.each do |wall| %>
+          <p><%= link_to wall.name, edit_wall_path(wall) %></p>
+        <% end %>
+
+
+       </div>
+     </div>
+    </div>
+
+
+

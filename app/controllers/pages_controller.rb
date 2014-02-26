@@ -11,9 +11,11 @@ class PagesController < ApplicationController
       @walls.each {|wall| @posts << wall.posts}
       @posts = @posts.flatten
       @posts.sort! { |a,b| b.created_at <=> a.created_at}
-      @user.get_fb_links
-      @fblinks = @user.links
-      @fblinks.order(:created_time).reverse
+      unless current_user.oauth_token == nil
+        @user.get_fb_links
+        @fblinks = @user.links
+        @fblinks.order(:created_time).reverse
+      end
 
 
     else

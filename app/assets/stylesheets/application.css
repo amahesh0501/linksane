@@ -5,3 +5,11 @@
   padding: 0px 5px 0px 5px;
   border-radius: 20%;
 }
+
+.active a {
+  color: white;
+}
+
+.active a:hover{
+  color: white;
+}

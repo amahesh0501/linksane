@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
+      <% unless current_user.oauth_token == nil %>
       <h2>FB Posts</h2>
         <% @fblinks.each do |fblink| %>
           <div class="row">
@@ -16,6 +17,7 @@
           </div>
           <hr/>
         <% end %>
+      <% end %>
       <h2> Posts </h2>
       <br/>
         <% @posts.each do |post| %>

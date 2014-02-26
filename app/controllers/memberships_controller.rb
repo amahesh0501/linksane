@@ -45,4 +45,13 @@ class MembershipsController < ApplicationController
     render json: {user_id: id}.to_json
   end
 
+  def destroy
+    p params
+    p "*" * 200
+    membership = Membership.find(params[:id])
+    membership.destroy
+    render json: {wall_id: params[:wall_id], user_id: current_user.id}.to_json
+
+  end
+
 end

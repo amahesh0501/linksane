@@ -74,10 +74,12 @@ class WallsController < ApplicationController
     redirect_to root_path
   end
 
-def manage_wall
-  authenticate_user!
-  @walls = Wall.where(admin_id: current_user.id)
-end
+  def manage_wall
+    authenticate_user!
+    @admin_walls = Wall.where(admin_id: current_user.id)
+    @joined_walls = current_user.walls - @admin_walls
+  end
+
 
 
 end

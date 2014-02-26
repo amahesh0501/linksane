@@ -7,7 +7,7 @@ Hackernewsclone::Application.routes.draw do
   match '/memberships/reinstate', to: 'memberships#reinstate', via: 'post'
   match '/walls/manage_walls', to: 'walls#manage_wall'
   resources :walls do
-    resources :memberships, only: [:new, :create]
+    resources :memberships
     resources :posts do
       resources :comments
     end

@@ -40,6 +40,16 @@ $(document).ready(function () {
     $('#post_form').slideToggle();
   });
 
+// $('.list-group-item').on('click', function(){
+//   console.log(this)
+//   console.log($(this).siblings())
+//   console.log(this.parentElement)
+//   $(this).siblings().removeClass('active')
+
+//   $(this).addClass('active')
+
+// })
+
 
 
 });
