@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-md-1"></div>
+
+    <!-- This is the Voting Section-->
+
+  <div class="col-md-2">
+
+    <%= link_to image_tag('http://www.icondig.com/data/icons/nounproject/512/330.png', :width => "50px", :height => "50px"), votes_path(:post_id => post.id), remote: true, method: :post, :class => 'vote-post' %>
+    <p class="display-vote-count"><%= pluralize(post.votes.count, 'Vote') %></p>
+  </div>
+
+<!-- This is the Post Content Section-->
+
+  <div class="col-md-6">
+    <% if post.image_file_name != nil %>
+    <a href="<%=post.image.url%>"><%= image_tag post.image.url(:medium) %></a>
+    <% end %>
+    <% if post.link %>
+    <a href="<%=post.link%>" target="_blank">View Link</a>
+    <%end%>
+    <p><%=post.description%></p>
+  </div>
+
+  <!-- This is the User Info Section-->
+
+  <div class="col-md-2 post-info">
+    <% if post.user_id %>
+      <% user = User.find(post.user_id) %>
+      <p>Posted by: <%=user.name%></p>
+    <%end%>
+    <%formatted_date = post.created_at.strftime('%b %d %Y at %H:%M')%>
+    <p><%=formatted_date%></p>
+    <% wall = Wall.find(post.wall_id) %>
+    <% comments = post.comments.length.to_s + " comments" %>
+    <p><%= link_to comments, wall_post_path(wall, post)%></p>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+<hr/>

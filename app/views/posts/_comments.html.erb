@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-5">
+      <h3>Comments</h3>
+
+       <!-- Display All Existing Comments -->
+
+      <% @comments.each do |comment| %>
+        <p><%=comment.description%></p>
+        <% user = User.find(comment.user_id) %>
+        <p>By <%=user.name%></p>
+
+        <% if comment.user_id == current_user.id %>
+          <%= link_to "Edit Comment", edit_wall_post_comment_path(@wall, @post, comment) %> | <%= link_to 'Delete Comment', wall_post_comment_path(@wall, @post, comment), :confirm => 'Are you sure?', :method => :delete %>
+        <%end%>
+        <hr/>
+      <%end%>
+
+      <!-- Create a New Comment -->
+
+      <%= render 'layouts/errors' if flash[:errors] %>
+      <%= form_for [@wall, @post, @comment] do |f| %>
+        <div class="form-group">
+          <%= f.label :comment %><br/>
+          <%= f.text_area :description, :cols => "60", :rows => "3" %><br/>
+        </div>
+        <%= f.submit "Post Comment", :class => 'btn btn-success' %>
+      <% end %>
+      <br/><br/>
+
+    </div>
+</div>

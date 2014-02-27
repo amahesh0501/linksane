@@ -1,0 +1,11 @@
+<div class="row">
+ <div class="col-md-3"><p><%= image_tag(fblink.picture_url) if fblink.picture_url %></p></div>
+ <div class="col-md-1"></div>
+ <div class="col-md-8">
+   <p><%= link_to fblink.name, fblink.url %></p>
+   <p><%= fblink.caption %></p>
+   <p><%= fblink.message %></p>
+   <img src="http://graph.facebook.com/<%=fblink.sender_id%>/picture" height="35" /> &nbsp; Posted by <%= link_to fblink.sender_name, "http://facebook.com/"+ fblink.sender_id %>
+ </div>
+</div>
+<hr/>

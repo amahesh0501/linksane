@@ -9,17 +9,7 @@
         <% unless current_user.oauth_token == nil %>
         <h2>FB Posts</h2>
           <% @fblinks.each do |fblink| %>
-            <div class="row">
-              <div class="col-md-3"><p><%= image_tag(fblink.picture_url) if fblink.picture_url %></p></div>
-              <div class="col-md-1"></div>
-              <div class="col-md-8">
-                <p><%= link_to fblink.name, fblink.url %></p>
-                <p><%= fblink.caption %></p>
-                <p><%= fblink.message %></p>
-                <img src="http://graph.facebook.com/<%=fblink.sender_id%>/picture" height="35" /> &nbsp; Posted by <%= link_to fblink.sender_name, "http://facebook.com/"+ fblink.sender_id %>
-              </div>
-            </div>
-            <hr/>
+            <%= render '/pages/fblink_post', :fblink => fblink %>
           <% end %>
         <% end %>
 
@@ -28,55 +18,14 @@
         <h2> Posts </h2>
         <br/>
           <% @posts.each do |post| %>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-2">
-                    <%= link_to image_tag('http://www.icondig.com/data/icons/nounproject/512/330.png', :width => "50px", :height =>
-        "50px"), votes_path(:post_id => post.id), remote: true, method: :post, :class => 'vote-post' %>
-                    <p class="display-vote-count"><%= pluralize(post.votes.count, 'Vote') %></p>
-                </div>
-                <div class="col-md-6">
-                    <% if post.image_file_name != nil %>
-                      <a href="<%=post.image.url%>"><%= image_tag post.image.url(:medium) %></a>
-                    <% end %>
-                    <% if post.link %>
-                      <a href="<%=post.link%>" target="_blank">View Link</a>
-                    <%end%>
-                    <p><%=post.description%></p>
-                </div>
-                <div class="col-md-2 post-info">
-                    <% if post.user_id %>
-                      <% user = User.find(post.user_id) %>
-                      <p>Posted by: <%=user.name%></p>
-                    <%end%>
-                    <%formatted_date = post.created_at.strftime('%b %d %Y at %H:%M')%>
-                    <p><%=formatted_date%></p>
-                    <% wall = Wall.find(post.wall_id) %>
-                    <% comments = post.comments.length.to_s + " comments" %>
-                    <p><%= link_to comments, wall_post_path(wall, post)%></p>
-                </div>
-                <div class="col-md-1"></div>
-              </div>
-              <hr/>
-            <%end%>
+            <%= render 'walls/post_row', :post => post %>
+          <%end%>
       </div>
     </div>
   <%else%>
 
   <!-- Logged Out Home Page -->
 
-  <div class="row">
-    <div class="col-md-1"></div>
-    <div class="col-md-10">
-      <div class="jumbotron">
-       <h1>Welcome to Browntown Reddit</h1>
-       <p>You wanna seee this shit - sign up or sign in</p>
-       <p>
-         <a class="btn btn-lg btn-primary" href="/auth/login" role="button">Sign In</a> <a class="btn btn-lg btn-success" href="/auth/register/sign_up" role="button">Sign Up</a>
-         <%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook) %>
-       </p>
-     </div>
-   </div>
-   <div class="col-md-1"></div>
- </div>
+  <%= render 'pages/landing_page' %>
+
  <%end%>
