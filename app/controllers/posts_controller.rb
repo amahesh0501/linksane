@@ -24,7 +24,7 @@ class PostsController < ApplicationController
 
   def create
     @wall = Wall.find params[:wall_id]
-    @post = @wall.posts.build(link: params[:post][:link], description: params[:post][:description], user_id: current_user.id, wall_id: @wall.id, image: params[:post][:image] )
+    @post = @wall.posts.build(link: params[:post][:link], description: params[:post][:description], user_id: current_user.id, wall_id: @wall.id, image: params[:post][:image], video_url: params[:post][:video_url] )
 
     if @post.save
       redirect_to wall_path(@wall)

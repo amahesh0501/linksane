@@ -12,13 +12,17 @@
     <!-- Post Content (Text Video Description) -->
 
     <div class="col-md-6">
-        <% if @post.image_file_name != nil %>
-          <a href="<%=@post.image.url%>"><%= image_tag @post.image.url(:medium) %></a>
-        <% end %>
-        <% if @post.link %>
-          <a href="<%=@post.link%>" target="_blank">View Link</a>
-        <%end%>
-        <p><%=@post.description%></p>
+      <% if @post.link %>
+      <a href="<%=@post.link%>" target="_blank">View Link</a>
+      <%end%>
+      <p><%=@post.description%></p>
+      <% if @post.image_file_name%>
+        <a href="<%=@post.image.url%>"><%= image_tag @post.image.url(:medium) %></a>
+      <% end %>
+      <% if @post.video_url %>
+        <% embed_code = @post.get_embed_code%>
+        <%= embed_code.html_safe %>
+      <%end%>
     </div>
 
     <!-- Author Info and Post Time -->

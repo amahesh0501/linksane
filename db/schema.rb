@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20140225055501) do
     t.string   "link"
     t.text     "description"
     t.integer  "vote_count",         :default => 0
+    t.string   "video_url"
     t.integer  "user_id"
     t.integer  "wall_id"
     t.datetime "created_at",                        :null => false

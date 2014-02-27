@@ -9,13 +9,14 @@
     <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
   </p>
   <div class="list-group">
-    <% if @user_walls_accessible.length == 0 %>
-      <a href="#" class="list-group-item active">You Have No Walls Yet :(</a>
-    <% end %>
-
     <div class= "<%= 'active' if url == "http://localhost/" %> list-group-item">
       <%= link_to "Home", root_path%>
     </div>
+    <% if @user_walls_accessible.length == 0 %>
+      <%= link_to "Create a Wall", new_wall_path, class: "list-group-item" %>
+    <% end %>
+
+
 
     <% @user_walls_accessible.each do |wall| %>
       <% membership = Membership.where(user_id: current_user.id, wall_id: wall.id) %>

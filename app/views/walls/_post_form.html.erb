@@ -29,8 +29,12 @@
         <div class="row">
           <div class="col-md-5">
             <%= form_for [@wall, @post] do |f| %>
+            <div class="form-group">
+              <%= f.label :video_url %><br/>
+              <%= f.url_field :video_url %>
+            </div>
               <div class="form-group">
-                <%= f.label "YouTube Embed Code" %><br/>
+                <%= f.label "Description" %><br/>
                 <%= f.text_area :description , :cols => "60", :rows => "3" %>
               </div>
               <%= f.submit "Create Post", :class => 'btn btn-success'  %>

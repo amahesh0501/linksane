@@ -4,6 +4,7 @@ class CreatePosts < ActiveRecord::Migration
       t.string :link
       t.text :description
       t.integer :vote_count, default: 0
+      t.string :video_url
       t.belongs_to :user
       t.belongs_to :wall
 

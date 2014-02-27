@@ -1,5 +1,5 @@
 class Post < ActiveRecord::Base
-  attr_accessible :link, :description, :wall_id, :user_id, :image
+  attr_accessible :link, :description, :wall_id, :user_id, :image, :video_url
 
   belongs_to :user
   belongs_to :wall
@@ -19,6 +19,26 @@ class Post < ActiveRecord::Base
     self.user_id == user.id ? true : false
   end
 
+  def get_embed_code
+    url = self.video_url
+    if url != nil
+      if url =~ /youtube.com/
+        /(?<url>v=)(?<video_id>.+)/ =~ url
+        "<iframe width='320' height='180' src='//www.youtube.com/embed/#{video_id}' frameborder='0' allowfullscreen></iframe>"
+      elsif url =~ /vimeo.com/
+        /(?<url>vimeo\.com\/)(?<video_id>.+)/ =~ url
+        "<iframe src='//player.vimeo.com/video/#{video_id}?title=0&amp;byline=0&amp;portrait=0&amp;color=ddf5a2' width='320' height='180' frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>"
+      elsif url =~ /youtu.be/
+        /(?<url>\.be\/)(?<video_id>.+)/ =~ url
+        "<iframe width='320' height='315' src='//www.youtube.com/embed/#{video_id}' frameborder='0' allowfullscreen></iframe>"
+      end
+    end
+
+  end
+
 
 
 end
+
+
+
