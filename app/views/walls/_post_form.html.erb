@@ -1,59 +1,27 @@
   <button  id="show_post_form" class="btn btn-primary">Share Something</button>
   <%= render 'layouts/errors' if flash[:errors] %>
+
   <div id="post_form">
     <br/>
+
+
     <ul class="nav nav-tabs">
-      <li ><a href="#tab1" data-toggle="tab">Home</a></li>
-      <li><a href="#tab2" data-toggle="tab">Profile</a></li>
-      <li><a href="#tab3" data-toggle="tab">Messages</a></li>
-      <li><a href="#tab4" data-toggle="tab">Settings</a></li>
+      <li class="active"><a href="#message" data-toggle="tab">Message</a></li>
+      <li><a href="#link" data-toggle="tab">Link</a></li>
+      <li><a href="#video" data-toggle="tab">Video</a></li>
+      <li><a href="#image" data-toggle="tab">Image</a></li>
     </ul>
 
-    <div class="tab" id="tab1">
-        <br/>
-        <div class="row">
-          <div class="col-md-5">
-            <%= form_for [@wall, @post] do |f| %>
-              <div class="form-group">
-                <%= f.label :description %><br/>
-                <%= f.text_area :description , :cols => "60", :rows => "3" %>
-              </div>
-              <%= f.submit "Create Post", :class => 'btn btn-success'  %>
-            <% end %>
-          </div>
-        </div>
-    </div>
+    <div class="tab-content">
 
-    <div class="tab" id="tab2">
-        <br/>
-        <div class="row">
-          <div class="col-md-5">
-            <%= form_for [@wall, @post] do |f| %>
-            <div class="form-group">
-              <%= f.label :video_url %><br/>
-              <%= f.url_field :video_url %>
-            </div>
-              <div class="form-group">
-                <%= f.label "Description" %><br/>
-                <%= f.text_area :description , :cols => "60", :rows => "3" %>
-              </div>
-              <%= f.submit "Create Post", :class => 'btn btn-success'  %>
-            <% end %>
-          </div>
-        </div>
-    </div>
 
-    <div class="tab" id="tab3">
-      <br/>
+    <div class="tab-pane active" id="message">
       <div class="row">
         <div class="col-md-5">
+          <br/>
           <%= form_for [@wall, @post] do |f| %>
             <div class="form-group">
-              <%= f.label :link %><br/>
-              <%= f.url_field :link %>
-            </div>
-            <div class="form-group">
-              <%= f.label "Description" %><br/>
+              <%= f.label :description %><br/>
               <%= f.text_area :description , :cols => "60", :rows => "3" %>
             </div>
             <%= f.submit "Create Post", :class => 'btn btn-success'  %>
@@ -62,23 +30,73 @@
       </div>
     </div>
 
-    <div class="tab" id="tab4">
+    <div class="tab-pane" id="link">
+     <div class="row">
+       <div class="col-md-5">
         <br/>
-        <div class="row">
-          <div class="col-md-5">
-            <%= form_for [@wall, @post] do |f| %>
-              <div class="form-group">
-                <%= f.label "Caption" %><br/>
-                <%= f.text_area :description , :cols => "60", :rows => "3" %>
-              </div>
-              <div class="form-group">
-                <%= f.label :image %>
-                <%= f.file_field :image, class: "form-control" %>
-              </div>
-              <%= f.submit "Create Post", :class => 'btn btn-success'  %>
-            <% end %>
+        <%= form_for [@wall, @post] do |f| %>
+          <div class="form-group">
+            <%= f.label :link %><br/>
+            <%= f.url_field :link %>
           </div>
-        </div>
+          <div class="form-group">
+            <%= f.label "Description" %><br/>
+            <%= f.text_area :description , :cols => "60", :rows => "3" %>
+          </div>
+          <%= f.submit "Create Post", :class => 'btn btn-success'  %>
+        <% end %>
+       </div>
+     </div>
     </div>
 
+
+    <div class="tab-pane" id="video">
+     <div class="row">
+       <div class="col-md-5">
+        <br/>
+        <%= form_for [@wall, @post] do |f| %>
+        <div class="form-group">
+          <%= f.label :video_url %><br/>
+          <%= f.url_field :video_url %>
+        </div>
+          <div class="form-group">
+            <%= f.label "Description" %><br/>
+            <%= f.text_area :description , :cols => "60", :rows => "3" %>
+          </div>
+          <%= f.submit "Create Post", :class => 'btn btn-success'  %>
+        <% end %>
+       </div>
+     </div>
+    </div>
+
+
+    <div class="tab-pane" id="image">
+     <div class="row">
+       <div class="col-md-5">
+        <br/>
+        <%= form_for [@wall, @post] do |f| %>
+        <div class="form-group">
+          <%= f.label "Caption" %><br/>
+          <%= f.text_area :description , :cols => "60", :rows => "3" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :image %>
+          <%= f.file_field :image, class: "form-control" %>
+        </div>
+        <%= f.submit "Create Post", :class => 'btn btn-success'  %>
+        <% end %>
+      </div>
+     </div>
+    </div>
+
+
+
+    </div>
   </div>
+
+
+
+
+
+
+

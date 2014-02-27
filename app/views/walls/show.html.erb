@@ -7,21 +7,37 @@
     <% @membership.save %>
 
     <!-- This Renders All 4 Tabs of the Post Form -->
+
+  </div>
+  <div class="col-md-1"></div>
+</div>
+
+<!-- This Renders All of the Posts in the Group -->
+<div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-12">
     <%= render 'walls/post_form' %>
   </div>
   <div class="col-md-1"></div>
 </div>
-<br/><br/>
 
-<!-- This Renders All of the Posts in the Group -->
-<% if @posts.length == 0 %>
-  <p>No posts yet</p>
-<%else%>
-  <% @posts.each do |post| %>
-    <%= render 'walls/post_row', :post => post %>
+<div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-12">
+    <% if @posts.length == 0 %>
+      <br/><br/><br/>
+      <p>No posts yet</p>
+    <%else%>
+      <% @posts.each do |post| %>
+      <br/><br/><br/>
+        <%= render 'walls/post_row', :post => post %>
+      <%end%>
+    <%end%>
+  <div class="col-md-10">
+  <div class="col-md-1"></div>
+</div>
 
-  <%end%>
-<%end%>
+
 
 <!-- This is the Pagination Section-->
 
