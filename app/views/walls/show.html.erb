@@ -1,6 +1,4 @@
 
-
-
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
@@ -8,11 +6,11 @@
       <% @membership.last_visit_time = Time.now %>
       <% @membership.save %>
 
+
+    <!-- This Renders All 4 Tabs of the Post Form -->
+
     <button  id="show_post_form" class="btn btn-primary">Share Something</button>
-
-
     <%= render 'layouts/errors' if flash[:errors] %>
-
     <div id="post_form">
       <br/>
       <ul class="nav nav-tabs">
@@ -22,13 +20,11 @@
         <li><a href="#tab4" data-toggle="tab">Settings</a></li>
       </ul>
 
-
       <div class="tab" id="tab1">
           <br/>
           <div class="row">
             <div class="col-md-5">
               <%= form_for [@wall, @post] do |f| %>
-
                 <div class="form-group">
                   <%= f.label :description %><br/>
                   <%= f.text_area :description , :cols => "60", :rows => "3" %>
@@ -37,7 +33,6 @@
               <% end %>
             </div>
           </div>
-
       </div>
 
       <div class="tab" id="tab2">
@@ -45,7 +40,6 @@
           <div class="row">
             <div class="col-md-5">
               <%= form_for [@wall, @post] do |f| %>
-
                 <div class="form-group">
                   <%= f.label "YouTube Embed Code" %><br/>
                   <%= f.text_area :description , :cols => "60", :rows => "3" %>
@@ -65,7 +59,6 @@
                 <%= f.label :link %><br/>
                 <%= f.url_field :link %>
               </div>
-
               <div class="form-group">
                 <%= f.label "Description" %><br/>
                 <%= f.text_area :description , :cols => "60", :rows => "3" %>
@@ -81,17 +74,14 @@
           <div class="row">
             <div class="col-md-5">
               <%= form_for [@wall, @post] do |f| %>
-
                 <div class="form-group">
                   <%= f.label "Caption" %><br/>
                   <%= f.text_area :description , :cols => "60", :rows => "3" %>
                 </div>
-
                 <div class="form-group">
                   <%= f.label :image %>
                   <%= f.file_field :image, class: "form-control" %>
                 </div>
-
                 <%= f.submit "Create Post", :class => 'btn btn-success'  %>
               <% end %>
             </div>
@@ -99,28 +89,30 @@
       </div>
 
     </div>
-
-
-
-
-
-
     </div>
     <div class="col-md-1"></div>
   </div>
   <br/><br/>
+
+  <!-- This Renders All of the Posts in the Group -->
+
   <% if @posts.length == 0 %>
     <p>No posts yet</p>
   <%else%>
   <% @posts.each do |post| %>
     <div class="row">
         <div class="col-md-1"></div>
+
+        <!-- This is the Voting Section-->
+
         <div class="col-md-2">
-<!--             <img class="vote" data-id="<%=post.id%>" src="http://www.icondig.com/data/icons/nounproject/512/330.png" height="50" width="50"/> -->
-            <%= link_to image_tag('http://www.icondig.com/data/icons/nounproject/512/330.png', :width => "50px", :height =>
-"50px"), votes_path(:post_id => post.id), remote: true, method: :post, :class => 'vote-post' %>
+
+            <%= link_to image_tag('http://www.icondig.com/data/icons/nounproject/512/330.png', :width => "50px", :height => "50px"), votes_path(:post_id => post.id), remote: true, method: :post, :class => 'vote-post' %>
             <p class="display-vote-count"><%= pluralize(post.votes.count, 'Vote') %></p>
         </div>
+
+        <!-- This is the Post Content Section-->
+
         <div class="col-md-6">
             <% if post.image_file_name != nil %>
               <a href="<%=post.image.url%>"><%= image_tag post.image.url(:medium) %></a>
@@ -130,14 +122,13 @@
             <%end%>
             <p><%=post.description%></p>
         </div>
+
+        <!-- This is the User Info Section-->
+
         <div class="col-md-2 post-info">
             <% if post.user_id %>
               <% user = User.find(post.user_id) %>
-            <%end%>
-            <% if post.user_id %>
               <p>Posted by: <%=user.name%></p>
-            <%else%>
-              <p>Posted by <%=post.anon_name%></p>
             <%end%>
             <%formatted_date = post.created_at.strftime('%b %d %Y at %H:%M')%>
             <p><%=formatted_date%></p>
@@ -150,6 +141,9 @@
       <hr/>
     <%end%>
     <%end%>
+
+    <!-- This is the Pagination Section-->
+
 
     <div class="center">
        <%= will_paginate @posts, renderer: BootstrapPagination::Rails %>

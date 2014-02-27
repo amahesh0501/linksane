@@ -4,4 +4,10 @@ class Comment < ActiveRecord::Base
   belongs_to :user
   belongs_to :post
   validates_presence_of :description
+
+  def can_edit?(user)
+    self.user_id == user.id ? true : false
+  end
+
+
 end

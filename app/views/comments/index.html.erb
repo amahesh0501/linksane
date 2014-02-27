@@ -1,7 +1,0 @@
-<h2>All Comments</h2>
-
-<% @comments.each do |comment| %>
-  <p><%= comment.description %></p>
-  <% user = User.find(comment.user_id) %>
-  <p>Posted by <%= user.name %></p>
-<% end %>

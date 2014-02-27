@@ -5,8 +5,7 @@ class CommentsController < ApplicationController
   end
 
   def show
-    authenticate_user!
-    @comment = Comment.find params[:id]
+    redirect_to wall_post_path(Wall.find(params[:wall_id]), Post.find(params[:post_id]))
   end
 
   def new
@@ -16,15 +15,12 @@ class CommentsController < ApplicationController
   def create
     @wall = Wall.find params[:wall_id]
     @post = Post.find params[:post_id]
-    @user = current_user
-    @user_id = current_user.id
     @comment = @post.comments.build(description: params[:comment][:description], user_id: current_user.id, post_id: params[:post_id])
     if @comment.save
       redirect_to wall_post_path(@wall, @post)
     else
       flash[:errors] = @comment.errors.full_messages
       redirect_to wall_post_path(@wall, @post)
-
     end
   end
 
@@ -34,7 +30,7 @@ class CommentsController < ApplicationController
     @post = Post.find(params[:post_id])
     @comment = Comment.find params[:id]
 
-    unless @post.user_id == current_user.id
+    unless @comment.can_edit?(current_user)
       redirect_to wall_post_path(@wall, @post)
     end
 

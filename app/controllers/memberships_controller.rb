@@ -1,30 +1,23 @@
 class MembershipsController < ApplicationController
 
   def new
-    if Membership.find_by_user_id_and_wall_id(current_user.id, params[:wall_id])
-      redirect_to wall_path(Wall.find(params[:wall_id]))
-    end
     @membership = Membership.new
     @user = current_user
     @wall = Wall.find(params[:wall_id])
+    redirect_to wall_path(@wall) if Membership.find_by_user_id_and_wall_id(current_user.id, @wall.id)
   end
 
   def create
     wall = Wall.find(params[:wall_id])
-    if wall.access_code == params[:access_code] && user_signed_in?
-      user = current_user
-      Membership.create(user_id: user.id, wall_id: wall.id)
-    end
+    Membership.create(user_id: current_user.id, wall_id: wall.id) if wall.grant_access(params[:access_code])
     redirect_to wall_path(wall)
   end
 
   def revoke
-    puts params
-    @membership = Membership.where(user_id: params[:user_id], wall_id: params[:wall_id])
-    if @membership.empty?
+    @membership = Membership.where(user_id: params[:user_id], wall_id: params[:wall_id]).first
+    if !@membership
       id = nil
     else
-      @membership = @membership.first
       id = @membership.user_id
       @membership.revoked = true
       @membership.save
@@ -33,11 +26,10 @@ class MembershipsController < ApplicationController
   end
 
   def reinstate
-    @membership = Membership.where(user_id: params[:user_id], wall_id: params[:wall_id])
-    if @membership.empty?
+    @membership = Membership.where(user_id: params[:user_id], wall_id: params[:wall_id]).first
+    if !@membership
       id = nil
     else
-      @membership = @membership.first
       id = @membership.user_id
       @membership.revoked = false
       @membership.save
@@ -46,12 +38,9 @@ class MembershipsController < ApplicationController
   end
 
   def destroy
-    p params
-    p "*" * 200
     membership = Membership.find(params[:id])
     membership.destroy
     render json: {wall_id: params[:wall_id], user_id: current_user.id}.to_json
-
   end
 
 end

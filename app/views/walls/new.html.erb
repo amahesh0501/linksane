@@ -16,10 +16,6 @@
           <%= f.label :access_code %><br/>
           <%= f.text_field :access_code %>
         </div>
-        <div class="form-group">
-          <%= f.label :description %><br/>
-          <%= f.text_area :description, :rows => "3" %>
-        </div>
         <%= f.hidden_field :admin_id, :value => @user_id %>
         <%= f.submit "Create Wall", :class => 'btn btn-success'  %>
       <% end %>

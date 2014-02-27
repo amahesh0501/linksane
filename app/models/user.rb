@@ -24,6 +24,16 @@ class User < ActiveRecord::Base
   has_many :memberships, dependent: :destroy
   has_many :links
 
+  def get_posts
+    memberships = Membership.where(user_id: self.id)
+    walls = []
+    posts = []
+    memberships.each {|membership| walls << Wall.find(membership.wall_id) if membership.revoked == false}
+    walls.each {|wall| posts << wall.posts}
+    posts = posts.flatten
+    posts.sort! { |a,b| b.created_at <=> a.created_at}
+  end
+
   def self.find_for_facebook_oauth(auth)
     where(auth.slice(:provider, :uid)).first_or_create do |user|
       user.provider = auth.provider
@@ -63,8 +73,6 @@ class User < ActiveRecord::Base
     if Link.find_by_user_id(self.id)
       last_100 = Link.find_all_by_user_id(self.id).reverse.take(100)
       last_100.map! {|x| x['link_id'] }
-      p last_100
-      p "----"
       all_fb_links.each do |post|
           p post['id']
         unless last_100.include?(post['id'])
@@ -73,7 +81,6 @@ class User < ActiveRecord::Base
           end
         end
       end
-
     else
       all_fb_links.each do |post|
         if (post['caption'] && post['link'] !~ /https:\/\/www.facebook.com/) #|| post['message'].match(/http:\/\// || /https:\/\// )
@@ -81,17 +88,7 @@ class User < ActiveRecord::Base
         end
       end
     end
-
   end
-
-
-
-
-
-
-
-
-
 end
 
 

@@ -1,21 +1,21 @@
 class PostsController < ApplicationController
+
+  before_filter :authenticate_user!, :only => [:show, :edit ]
+
   def index
     redirect_to wall_path(Wall.find params[:wall_id])
-
   end
 
   def show
-    authenticate_user!
-    membership = Membership.where(wall_id: params[:wall_id], user_id: current_user.id)
-    unless membership.length == 1 && membership.first.revoked == false
-      redirect_to wall_path(Wall.find(params[:wall_id]))
-    end
-
+    @wall = Wall.find(params[:wall_id])
     @post = Post.find params[:id]
-    @can_edit = true if @post.user_id == current_user.id
+    @user = User.find(@post.user_id)
     @comments = @post.comments.order("created_at DESC")
     @comment = Comment.new
-    @wall = Wall.find(params[:wall_id])
+    @can_edit = @post.can_edit?(current_user)
+
+    redirect_to wall_path(@wall) unless @post.can_access?(current_user, @wall)
+
   end
 
   def new
@@ -35,21 +35,19 @@ class PostsController < ApplicationController
   end
 
   def edit
-    authenticate_user!
     @post = Post.find params[:id]
     @wall = Wall.find(params[:wall_id])
-    unless @post.user_id == current_user.id
-      redirect_to wall_path(Wall.find(params[:wall_id]))
-    end
 
+    redirect_to wall_post_path(@wall, @post) unless @post.can_edit?(current_user)
   end
 
   def update
     @post = Post.find params[:id]
+    @wall = Wall.find(params[:wall_id])
     if @post.update_attributes params[:post]
-      redirect_to wall_post_path(Wall.find(params[:wall_id]), @post)
+      redirect_to wall_post_path(@wall, @post)
     else
-      redirect_to edit_wall_post_path(Wall.find(params[:wall_id]), @post)
+      redirect_to edit_wall_post_path(@wall, @post)
       flash[:errors] = @post.errors.full_messages
     end
   end

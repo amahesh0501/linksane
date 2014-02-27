@@ -1,3 +1,5 @@
+  <%= render 'layouts/errors' if flash[:errors] %>
+
   <%= form_for [@wall, @membership] do |f| %>
     <div class="form-group">
       <%= label_tag :access_code %><br/>

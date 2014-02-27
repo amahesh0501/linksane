@@ -9,4 +9,16 @@ class Post < ActiveRecord::Base
 
   has_attached_file :image, :styles => { :medium => "400x400>", :thumb => "100x100>" }
 
+
+  def can_access?(user, wall)
+    membership = Membership.where(wall_id: wall.id, user_id: user.id).first
+    membership && membership.revoked == false ? true : false
+  end
+
+  def can_edit?(user)
+    self.user_id == user.id ? true : false
+  end
+
+
+
 end

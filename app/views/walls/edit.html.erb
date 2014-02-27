@@ -7,8 +7,10 @@
 
   </ul>
 
-  <!-- Tab panes -->
   <div class="tab-content">
+
+    <!-- Edit This Wall's Information -->
+
     <div class="tab-pane active" id="edit">
       <h1>Edit this Wall</h1>
       <%= render 'layouts/errors' if flash[:errors] %>
@@ -37,10 +39,12 @@
         </div>
       </div>
     </div>
+
+    <!-- Manage Wall Memberships -->
+
     <div class="tab-pane" id="manage">
      <div class="row">
        <div class="col-md-8">
-
          <span class="revoke">
            <h3>Current Members</h3>
            <% @members.each do |member| %>
@@ -52,13 +56,12 @@
              </p>
            <% end %>
          </span>
-
          <span class="reinstate">
            <h3>Banned Members</h3>
-           <% if @banned_members.length == 0 %>
+           <% if @revoked_members.length == 0 %>
              <p>There are no banned members</p>
              <%end%>
-           <% @banned_members.each do |member| %>
+           <% @revoked_members.each do |member| %>
              <p class="reinstate" data-user-id=<%=member.id%>>
                <%= member.name %>
                <%= link_to "Let Member Back In", '#', {data: {user_id: member.id, wall_id: @wall.id}}  %>
@@ -68,9 +71,12 @@
        </div>
      </div>
     </div>
+
+    <!-- Delete This Wall -->
+
     <div class="tab-pane active" id="delete">
       <br/>
-      <p>Please be careful: Once you delete a post, it will delete all posts assoicated with that wall</p>
+      <p>Please be careful: Once you delete a wall, it will delete all posts assoicated with that wall</p>
       <%= link_to 'Delete Wall', wall_path(@wall), :confirm => 'Are you sure?', :method => :delete %>
     </div>
 

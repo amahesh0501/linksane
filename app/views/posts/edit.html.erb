@@ -9,17 +9,17 @@
       </div>
 
       <% if @post.link %>
-      <div class="form-group">
-        <%= f.label :link %><br/>
-        <%= f.url_field :link %>
-      </div>
+        <div class="form-group">
+          <%= f.label :link %><br/>
+          <%= f.url_field :link %>
+        </div>
       <%end%>
 
       <% if @post.image_file_name %>
-      <div class="form-group">
-        <%= f.label :image %>
-        <%= f.file_field :image, class: "form-control" %>
-      </div>
+        <div class="form-group">
+          <%= f.label :image %>
+          <%= f.file_field :image, class: "form-control" %>
+        </div>
       <%end%>
 
       <%= f.submit "Edit Post", :class => 'btn btn-success'  %>

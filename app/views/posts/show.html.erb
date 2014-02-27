@@ -1,10 +1,16 @@
 <div class="row">
     <div class="col-md-1"></div>
+
+    <!-- Voting and Votes Counter -->
+
     <div class="col-md-2">
         <%= link_to image_tag('http://www.icondig.com/data/icons/nounproject/512/330.png', :width => "50px", :height =>
         "50px"), votes_path(:post_id => @post.id), remote: true, method: :post, :class => 'vote-post' %>
         <p class="display-vote-count"><%= pluralize(@post.votes.count, 'Vote') %></p>
     </div>
+
+    <!-- Post Content (Text Video Description) -->
+
     <div class="col-md-6">
         <% if @post.image_file_name != nil %>
           <a href="<%=@post.image.url%>"><%= image_tag @post.image.url(:medium) %></a>
@@ -14,11 +20,11 @@
         <%end%>
         <p><%=@post.description%></p>
     </div>
+
+    <!-- Author Info and Post Time -->
+
     <div class="col-md-2 post-info">
-        <% if @post.user_id %>
-          <% user = User.find(@post.user_id) %>
-        <%end%>
-        <p>Posted by: <%=user.name%></p>
+        <p>Posted by: <%=@user.name%></p>
         <%formatted_date = @post.created_at.strftime('%b %d %Y at %H:%M')%>
         <p><%=formatted_date%></p>
 
@@ -30,10 +36,16 @@
     <div class="col-md-1"></div>
 </div>
 <br/>
+
+ <!-- Comments -->
+
+
 <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-5">
       <h3>Comments</h3>
+
+       <!-- Display All Existing Comments -->
 
       <% @comments.each do |comment| %>
         <p><%=comment.description%></p>
@@ -46,7 +58,8 @@
         <hr/>
       <%end%>
 
-      <%= @comment.errors[:description].join("<br>") if @comment.errors[:description] %>
+      <!-- Create a New Comment -->
+
       <%= render 'layouts/errors' if flash[:errors] %>
       <%= form_for [@wall, @post, @comment] do |f| %>
         <div class="form-group">

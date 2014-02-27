@@ -6,10 +6,10 @@
   border-radius: 20%;
 }
 
-.active a {
+.list-group-item .active a {
   color: white;
 }
 
-.active a:hover{
+.list-group-item .active a:hover{
   color: white;
 }
